@@ -1,5 +1,7 @@
-import asyncio
+from api import statistics
+from fastapi import FastAPI
 
-from parser.parse_statistic import collect_data
-
-print(asyncio.run(collect_data('https://promote.telegram.org/stats/c4SW0pEXJ9fiA5of')))
+app = FastAPI()
+v1 = FastAPI()
+v1.include_router(statistics.router)
+app.mount("/v1", v1)

@@ -1,0 +1,1 @@
+from .parse_statistic import collect_data

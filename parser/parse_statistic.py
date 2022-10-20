@@ -1,10 +1,8 @@
 import datetime
 
 import aiohttp as aiohttp
-import validators
 from bs4 import BeautifulSoup
 
-from core import custom_logger, exceptions
 from core.models import StatsElem, Statistics
 
 BASE_URL = 'https://promote.telegram.org/'
