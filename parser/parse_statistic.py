@@ -40,7 +40,7 @@ async def parse_header_stats(url: str) -> dict | None:
     # status
     status = stats[2].contents[3].text.strip()
     # CPM
-    cpm = stats[3].contents[3].text.replace('€', '')
+    cpm = float(stats[3].contents[3].text.replace('€', ''))
     # views
     total_views = stats[4].contents[3].text.replace(',', '')
 
@@ -80,6 +80,15 @@ async def collect_data(url: str) -> Statistics:
     # collect graph stats
     graph_stats = await parse_graph_stats(url)
 
-    return Statistics(**header_stats, graph_stats=graph_stats)
+    # calculate other total values (total_joined, total_spent, subscriber_cost)
+    total_joined = sum([i.joined for i in graph_stats])
+    # cost per day = views * cpm / 1000
+    total_spent = round(sum([i.views * header_stats['cpm'] / 1000 for i in graph_stats]), 2)
+    # subscriber_cost = total_spent/total_joined
+    subscriber_cost = round(total_spent/total_joined, 2)
 
-
+    return Statistics(**header_stats,
+                      total_joined=total_joined,
+                      total_spent=total_spent,
+                      subscriber_cost=subscriber_cost,
+                      graph_stats=graph_stats)
