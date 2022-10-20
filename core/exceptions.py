@@ -5,10 +5,10 @@ class BasicParserException(Exception):
         return "Something goes wrong with parser"
 
 
-class InvalidUrlError(BasicParserException):
-    def __init__(self, url: str):
-        self.url = url
+class CampaignNotExistsError(BasicParserException):
+    def __init__(self, campaign_id: str):
+        self.campaign_id = campaign_id
 
     def __str__(self):
-        return f"{self.url} is invalid!"
+        return f"Ads campaign with '{self.campaign_id}' id is not exists!"
 

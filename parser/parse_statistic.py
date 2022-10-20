@@ -3,7 +3,7 @@ import datetime
 import aiohttp as aiohttp
 from bs4 import BeautifulSoup
 
-from core.models import StatsElem, Statistics
+from core import StatsElem, Statistics, CampaignNotExistsError
 
 BASE_URL = 'https://promote.telegram.org/'
 
@@ -17,6 +17,11 @@ async def parse_header_stats(campaign_id: str) -> dict | None:
     session = aiohttp.ClientSession(headers=BASE_HEADER)
     async with session.get(BASE_URL + 'stats/' + campaign_id) as resp:
         page = await resp.text()
+
+    if 'In addition to sending private messages and chatting in ' \
+       'private groups, Telegram users can subscribe to' in page:
+        raise CampaignNotExistsError(campaign_id)
+
     await session.close()
     page_markup = BeautifulSoup(page, 'lxml')
 
