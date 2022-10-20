@@ -7,11 +7,11 @@ router = APIRouter()
 
 
 @router.get("/get-stats/{campaign_id}", response_model=Statistics)
-async def read_item(campaign_id):
+async def get_campaign_stats(campaign_id):
     try:
         data = await collect_data(campaign_id)
     except CampaignNotExistsError as ex:
-        raise HTTPException(status_code=404, detail=str(ex))
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(ex))
     except Exception:
-        raise HTTPException(status_code=404, detail='something goes wrong with parser ...')
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='something goes wrong with parser ...')
     return data
