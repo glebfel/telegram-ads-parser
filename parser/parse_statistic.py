@@ -13,21 +13,11 @@ BASE_HEADER = {'Accept': '*/*',
                'User-Agent': 'Mozilla/5.0 (compatible; MSIE 10.0; Macintosh; Intel Mac OS X 10_7_3; Trident/6.0)'}
 
 
-def validate_link(url: str):
-    """Basic link validation"""
-    # basic url validation
-    if validators.url(url):
-        # validate if url contains is mobel.de
-        if BASE_URL in url:
-            return
-    raise exceptions.InvalidUrlError(url)
-
-
-async def parse_header_stats(url: str) -> dict | None:
+async def parse_header_stats(campaign_id: str) -> dict | None:
     """Get stats from page header (link, status, CPM, views)"""
     # get page html-markup
     session = aiohttp.ClientSession(headers=BASE_HEADER)
-    async with session.get(url) as resp:
+    async with session.get(BASE_URL + 'stats/' + campaign_id) as resp:
         page = await resp.text()
     await session.close()
     page_markup = BeautifulSoup(page, 'lxml')
@@ -52,10 +42,10 @@ async def parse_header_stats(url: str) -> dict | None:
     }
 
 
-async def parse_graph_stats(url: str) -> list[StatsElem] | None:
+async def parse_graph_stats(campaign_id: str) -> list[StatsElem] | None:
     # get graph stats in csv
-    querystring = {"prefix": f"shared/{url.split('/')[-1]}", "period": "day"}
-    url = BASE_URL + 'csv'
+    querystring = {"prefix": f"shared/{campaign_id}", "period": "day"}
+    url = BASE_URL + 'csv/'
     session = aiohttp.ClientSession(headers=BASE_HEADER)
     async with session.get(url, params=querystring) as resp:
         stats_csv = await resp.text()
@@ -70,15 +60,13 @@ async def parse_graph_stats(url: str) -> list[StatsElem] | None:
     return stats_list
 
 
-async def collect_data(url: str) -> Statistics:
-    # validate link
-    validate_link(url)
+async def collect_data(campaign_id: str) -> Statistics:
 
     # collect header stats
-    header_stats = await parse_header_stats(url)
+    header_stats = await parse_header_stats(campaign_id)
 
     # collect graph stats
-    graph_stats = await parse_graph_stats(url)
+    graph_stats = await parse_graph_stats(campaign_id)
 
     # calculate other total values (total_joined, total_spent, subscriber_cost)
     total_joined = sum([i.joined for i in graph_stats])
