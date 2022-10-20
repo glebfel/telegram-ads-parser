@@ -12,4 +12,6 @@ async def read_item(campaign_id):
         data = await collect_data(campaign_id)
     except CampaignNotExistsError as ex:
         raise HTTPException(status_code=404, detail=str(ex))
+    except Exception:
+        raise HTTPException(status_code=404, detail='something goes wrong with parser ...')
     return data
