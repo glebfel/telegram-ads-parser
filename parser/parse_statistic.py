@@ -42,13 +42,13 @@ async def parse_header_stats(url: str) -> dict | None:
     # CPM
     cpm = stats[3].contents[3].text.replace('€', '')
     # views
-    views = stats[4].contents[3].text.replace(',', '')
+    total_views = stats[4].contents[3].text.replace(',', '')
 
     return {
         'tg_link': tg_link,
         'status': status,
         'cpm': cpm,
-        'views': views
+        'total_views': total_views
     }
 
 
@@ -64,7 +64,7 @@ async def parse_graph_stats(url: str) -> list[StatsElem] | None:
     # convert csv in python list
     stats_list = [i.split('\t') for i in stats_csv.split('\n')][1:]
     # convert all list's elements to named dicts
-    stats_list = [StatsElem(date=datetime.datetime.strptime(i[0], '%d %b %Y'), views=i[1], joins=i[2]) for i in
+    stats_list = [StatsElem(date=datetime.datetime.strptime(i[0], '%d %b %Y'), views=i[1], joined=i[2]) for i in
                   stats_list]
 
     return stats_list
