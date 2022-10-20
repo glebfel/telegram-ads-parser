@@ -54,8 +54,8 @@ async def parse_header_stats(url: str) -> dict | None:
 
 async def parse_graph_stats(url: str) -> list[StatsElem] | None:
     # get graph stats in csv
-    url = BASE_URL + 'csv'
     querystring = {"prefix": f"shared/{url.split('/')[-1]}", "period": "day"}
+    url = BASE_URL + 'csv'
     session = aiohttp.ClientSession(headers=BASE_HEADER)
     async with session.get(url, params=querystring) as resp:
         stats_csv = await resp.text()
