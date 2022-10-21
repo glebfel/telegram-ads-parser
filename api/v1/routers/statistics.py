@@ -6,7 +6,7 @@ from core import Statistics, CampaignNotExistsError
 router = APIRouter()
 
 
-@router.get("/get-stats/{campaign_id}", response_model=Statistics)
+@router.get("/get-stats/{campaign_id}", response_model=Statistics, tags=["statistics"])
 async def get_campaign_stats(campaign_id: str) -> Statistics:
     """Get ads campaign statistics by id"""
     try:
