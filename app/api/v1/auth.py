@@ -5,7 +5,7 @@ from starlette.status import HTTP_403_FORBIDDEN
 from core import settings
 
 # set header key-value pair for auth
-api_key_header = APIKeyHeader(name="access-token", auto_error=False)
+api_key_header = APIKeyHeader(name="access-token", auto_error=False, description='Access token for authorization')
 
 
 async def get_api_key(api_key_header: str = Security(api_key_header)):

@@ -3,8 +3,8 @@ from api import statistics, root
 from fastapi import FastAPI
 from core import settings
 
-app = FastAPI()
-v1 = FastAPI()
+app = FastAPI(title='Telegram Ads Statistic')
+v1 = FastAPI(title='Telegram Ads Statistic')
 v1.include_router(statistics.router)
 v1.include_router(root.router)
 app.mount('/v1', v1)
