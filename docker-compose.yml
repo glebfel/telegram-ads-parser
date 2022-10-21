@@ -10,4 +10,4 @@ services:
     depends_on:
       - redis
     ports:
-      - 8000:80
+      - 8000:8000
