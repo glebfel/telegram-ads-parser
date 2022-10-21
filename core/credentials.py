@@ -11,6 +11,8 @@ class Settings(BaseSettings):
     REDIS_HOST: str = Field(..., env="REDIS_HOST")
     REDIS_PORT: int = Field(..., env="REDIS_PORT")
     REDIS_DB: int = Field(..., env="REDIS_DB")
+    FAST_API_HOST: str = Field(..., env="FAST_API_HOST")
+    FAST_API_PORT: int = Field(..., env="FAST_API_PORT")
 
     class Config:
         env_prefix = ""
