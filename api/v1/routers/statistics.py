@@ -3,10 +3,10 @@ from fastapi import APIRouter, HTTPException, status
 from parser import collect_data
 from core import Statistics, CampaignNotExistsError
 
-router = APIRouter()
+router = APIRouter(tags=["statistics"])
 
 
-@router.get("/get-stats/{campaign_id}", response_model=Statistics, tags=["statistics"])
+@router.get("/get-stats/{campaign_id}", response_model=Statistics)
 async def get_campaign_stats(campaign_id: str) -> Statistics:
     """Get ads campaign statistics by id"""
     try:
