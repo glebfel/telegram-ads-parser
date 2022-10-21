@@ -7,7 +7,7 @@ router = APIRouter()
 
 
 @router.get("/get-stats/{campaign_id}", response_model=Statistics)
-async def get_campaign_stats(campaign_id) -> Statistics:
+async def get_campaign_stats(campaign_id: str) -> Statistics:
     """Get ads campaign statistics by id"""
     try:
         data = await collect_data(campaign_id)

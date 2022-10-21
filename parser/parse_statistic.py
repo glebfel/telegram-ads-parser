@@ -14,15 +14,14 @@ BASE_HEADER = {'Accept': '*/*',
 async def parse_header_stats(campaign_id: str) -> dict | None:
     """Get stats from page header (link, status, CPM, views)"""
     # get page html-markup
-    session = aiohttp.ClientSession(headers=BASE_HEADER)
-    async with session.get(BASE_URL + 'stats/' + campaign_id) as resp:
-        page = await resp.text()
+    async with aiohttp.ClientSession() as session:
+        async with session.get(BASE_URL + 'stats/' + campaign_id) as resp:
+            page = await resp.text()
 
     if 'In addition to sending private messages and chatting in ' \
        'private groups, Telegram users can subscribe to' in page:
         raise CampaignNotExistsError(campaign_id)
 
-    await session.close()
     page_markup = BeautifulSoup(page, 'lxml')
 
     # find stats
@@ -49,10 +48,9 @@ async def parse_graph_stats(campaign_id: str) -> list[StatsElem] | None:
     # get graph stats in csv
     querystring = {"prefix": f"shared/{campaign_id}", "period": "day"}
     url = BASE_URL + 'csv/'
-    session = aiohttp.ClientSession(headers=BASE_HEADER)
-    async with session.get(url, params=querystring) as resp:
-        stats_csv = await resp.text()
-    await session.close()
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url, params=querystring) as resp:
+            stats_csv = await resp.text()
 
     # convert csv in python list
     stats_list = [i.split('\t') for i in stats_csv.split('\n')][1:]
