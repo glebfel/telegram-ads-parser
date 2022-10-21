@@ -11,8 +11,8 @@ origins = [
 ]
 
 # init api instances
-app = FastAPI(title='Telegram Ads Statistic')
-v1 = FastAPI(title='Telegram Ads Statistic')
+app = FastAPI(title='Telegram Ads Statistics')
+v1 = FastAPI(title='Telegram Ads Statistics')
 v1.include_router(statistics.router)
 v1.include_router(root.router)
 app.mount('/v1', v1)
