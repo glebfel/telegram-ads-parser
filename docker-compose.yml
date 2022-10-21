@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+
+  redis:
+    image: redis:7.0-bullseye
+    restart: always
+
+  api:
+    build: .
+    depends_on:
+      - redis
+    ports:
+      - 8000:80
