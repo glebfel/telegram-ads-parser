@@ -3,6 +3,7 @@ import datetime
 import aiohttp as aiohttp
 from bs4 import BeautifulSoup
 
+from cache import get_from_cache, check_cache, cache_request
 from core import StatsElem, Statistics, CampaignNotExistsError
 
 BASE_URL = 'https://promote.telegram.org/'
@@ -62,6 +63,9 @@ async def parse_graph_stats(campaign_id: str) -> list[StatsElem] | None:
 
 
 async def collect_data(campaign_id: str) -> Statistics:
+    # check if data already in redis
+    if check_cache(campaign_id):
+        return get_from_cache(campaign_id)
 
     # collect header stats
     header_stats = await parse_header_stats(campaign_id)
@@ -74,10 +78,16 @@ async def collect_data(campaign_id: str) -> Statistics:
     # cost per day = views * cpm / 1000
     total_spent = round(sum([i.views * header_stats['cpm'] / 1000 for i in graph_stats]), 2)
     # subscriber_cost = total_spent/total_joined
-    subscriber_cost = round(total_spent/total_joined, 2)
+    subscriber_cost = round(total_spent / total_joined, 2)
 
-    return Statistics(**header_stats,
-                      total_joined=total_joined,
-                      total_spent=total_spent,
-                      subscriber_cost=subscriber_cost,
-                      graph_stats=graph_stats)
+    # convert to Statistics object
+    statistics = Statistics(**header_stats,
+                            total_joined=total_joined,
+                            total_spent=total_spent,
+                            subscriber_cost=subscriber_cost,
+                            graph_stats=graph_stats)
+
+    # cache request
+    cache_request(campaign_id, statistics)
+
+    return statistics
