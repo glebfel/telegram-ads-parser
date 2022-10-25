@@ -2,7 +2,6 @@
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=badge&logo=docker&logoColor=white)
 
 # TelegramAdsParser
-
 TelegramAdsParser - утилита для сбора рекламных данных с https://promote.telegram.org/stats/.
 
 # Как запустить?
