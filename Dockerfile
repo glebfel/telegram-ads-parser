@@ -1,11 +1,13 @@
 FROM python:bullseye
 MAINTAINER Gleb Felyust 'felyust@list.ru'
 
-# copy project files and all dependencies
+# copy and install all dependencies
+COPY app/requirements.txt /app/
+RUN pip install -r /app/requirements.txt
+
+# copy project files
 COPY ./app /app
 WORKDIR /app
 
-# install all dependencies
-RUN pip install -r requirements.txt
-
-CMD ["python3","main.py"]
+# run api
+CMD ["python", "main.py"]
