@@ -1,4 +1,6 @@
 ![Python](https://img.shields.io/badge/Python-14354C?style=badge&logo=python&logoColor=white)
+![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=badge&logo=redis&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=badge&logo=fastapi&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=badge&logo=docker&logoColor=white)
 
 # TelegramAdsParser
