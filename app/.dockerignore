@@ -1,0 +1,3 @@
+.env.example
+logs.log
+/venv
