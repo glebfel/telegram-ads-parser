@@ -33,4 +33,6 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: telegram_ads_parser:latest
+          cache-from: type=registry,ref=telegram_ads_parser:buildcache
+          cache-to: type=registry,ref=telegram_ads_parser:buildcache,mode=max
 
