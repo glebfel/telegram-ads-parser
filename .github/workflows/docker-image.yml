@@ -32,7 +32,7 @@ jobs:
           context: "{{defaultContext}}:app"
           file: ./Dockerfile
           push: true
-          tags: telegram_ads_parser:latest
-          cache-from: type=registry,ref=telegram_ads_parser:buildcache
-          cache-to: type=registry,ref=telegram_ads_parser:buildcache,mode=max
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/telegram_ads_parser:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/telegram_ads_parser:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/telegram_ads_parser:buildcache,mode=max
 
