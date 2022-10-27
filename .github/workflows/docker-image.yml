@@ -32,5 +32,5 @@ jobs:
           context: "{{defaultContext}}:app"
           file: ./Dockerfile
           push: true
-          tags: TelegramAdsParser:latest
+          tags: telegram_ads_parser:latest
 
