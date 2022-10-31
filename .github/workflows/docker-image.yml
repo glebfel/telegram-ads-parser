@@ -42,7 +42,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - uses: alex-ac/github-action-ssh-docker-compose@master
+    - uses: gleb_fel/github-action-ssh-docker-compose@master
       name: Docker-Compose Remote Deployment
       with:
         docker_compose_filename: ./docker-compose.yml
