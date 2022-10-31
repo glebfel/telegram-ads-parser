@@ -6,7 +6,7 @@ services:
     restart: always
 
   api:
-    build: 123321/telegram_ads_parser:latest
+    build: 188322/telegram_ads_parser:latest
     depends_on:
       - redis
     ports:
