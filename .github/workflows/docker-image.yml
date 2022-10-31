@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  build:
+  docker_image_build_and_push:
 
     runs-on: ubuntu-latest
 
@@ -35,4 +35,18 @@ jobs:
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/telegram_ads_parser:latest
           cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/telegram_ads_parser:buildcache
           cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/telegram_ads_parser:buildcache,mode=max
+
+  remote_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: alex-ac/github-action-ssh-docker-compose@master
+      name: Docker-Compose Remote Deployment
+      with:
+        ssh_host: ${{ secrets.SSH_HOST }}
+        ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+        ssh_user: ${{ secrets.SSH_USER }}
+        docker_compose_prefix: ${{ secrets.SSH_HOST }}
 
