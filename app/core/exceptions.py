@@ -6,9 +6,16 @@ class BasicParserException(Exception):
 
 
 class CampaignNotExistsError(BasicParserException):
-    def __init__(self, campaign_id: str):
-        self.campaign_id = campaign_id
+    def __init__(self, promotion_id: str):
+        self.promotion_id = promotion_id
 
     def __str__(self):
-        return f"Ads campaign with '{self.campaign_id}' id is not exists!"
+        return f"Ads promotion with '{self.promotion_id}' id is not exists!"
 
+
+class NotEnoughDayDataError(BasicParserException):
+    def __init__(self, promotion_id: str):
+        self.promotion_id = promotion_id
+
+    def __str__(self):
+        return f"Not enough day data for the ads promotion with '{self.promotion_id}' id!"

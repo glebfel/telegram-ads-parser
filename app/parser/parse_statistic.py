@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 
 from cache import get_from_cache, check_cache, cache_request
 from core import StatsElem, Statistics, CampaignNotExistsError
+from core import NotEnoughDayDataError
 
 BASE_URL = 'https://promote.telegram.org/'
 
@@ -56,9 +57,12 @@ async def parse_graph_stats(promotion_id: str) -> list[StatsElem] | None:
     # convert csv in python list
     stats_list = [i.split('\t') for i in stats_csv.split('\n')][1:]
     # convert all list's elements to named dicts
-    stats_list = [StatsElem(date=datetime.datetime.strptime(i[0], '%d %b %Y'), views=i[1], joined=i[2], spent=0) for i
-                  in
-                  stats_list]
+    if stats_list:
+        if len(stats_list[0]) > 2:
+            stats_list = [StatsElem(date=datetime.datetime.strptime(i[0], '%d %b %Y'), views=i[1], joined=i[2], spent=0)
+                          for i in stats_list]
+        else:
+            raise NotEnoughDayDataError(promotion_id)
 
     return stats_list
 
