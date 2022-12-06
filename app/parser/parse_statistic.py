@@ -80,8 +80,9 @@ async def collect_data(promotion_id: str) -> Statistics:
 
     # calculate spent value for each day and add to the list
     for i in graph_stats:
-        # cost per day = views * cpm / 1000
-        i.spent = round((i.views * header_stats['cpm'] / 1000), 3)
+        # cost per day = (views * cpm / 1000)/0.8
+        # 0.8 - SJ commission
+        i.spent = round(((i.views * header_stats['cpm'] / 1000) / 0.8), 3)
 
     # calculate other total values (total_joined, total_spent, subscriber_cost)
     total_joined = sum([i.joined for i in graph_stats])
